@@ -14,7 +14,7 @@ extension DateTimeExt on DateTime {
     final hour = offset.inHours;
     final minute = offset.inMinutes - hour * 60;
     final hh = hour.abs().toString().padLeft(2, '0');
-    final mm = minute.toString().padLeft(2, '0');
+    final mm = minute.abs().toString().padLeft(2, '0');
     final time = '$hh:$mm';
 
     return base + (offset.inMinutes > 0 ? '+$time' : '-$time');
