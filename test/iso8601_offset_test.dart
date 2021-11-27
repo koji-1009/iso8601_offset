@@ -10,8 +10,8 @@ void main() {
   test('UTC time', () {
     final dateTime = DateTime.utc(2020, 1, 1, 10, 30, 0);
     final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.iso8601UtcStirng;
-    final offsetIso8601String = dateTime.iso8601OffsetString;
+    final utcIso8601String = dateTime.toIso8601UtcString();
+    final offsetIso8601String = dateTime.toIso8601OffsetString();
 
     expect(defaultIsoString, '2020-01-01T10:30:00.000Z');
     expect(utcIso8601String, '2020-01-01T10:30:00.000Z');
@@ -26,8 +26,8 @@ void main() {
     when(dateTime.timeZoneOffset).thenReturn(const Duration(hours: 9));
 
     final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.iso8601UtcStirng;
-    final offsetIso8601String = dateTime.iso8601OffsetString;
+    final utcIso8601String = dateTime.toIso8601UtcString();
+    final offsetIso8601String = dateTime.toIso8601OffsetString();
 
     expect(defaultIsoString, '2020-01-01T10:30:00.000');
     expect(utcIso8601String, '2020-01-01T01:30:00.000Z');
@@ -47,8 +47,8 @@ void main() {
     );
 
     final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.iso8601UtcStirng;
-    final offsetIso8601String = dateTime.iso8601OffsetString;
+    final utcIso8601String = dateTime.toIso8601UtcString();
+    final offsetIso8601String = dateTime.toIso8601OffsetString();
 
     expect(defaultIsoString, '2020-01-01T10:30:00.000');
     expect(utcIso8601String, '2019-12-31T22:30:00.000Z');
@@ -63,8 +63,8 @@ void main() {
     when(dateTime.timeZoneOffset).thenReturn(const Duration(hours: -5));
 
     final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.iso8601UtcStirng;
-    final offsetIso8601String = dateTime.iso8601OffsetString;
+    final utcIso8601String = dateTime.toIso8601UtcString();
+    final offsetIso8601String = dateTime.toIso8601OffsetString();
 
     expect(defaultIsoString, '2020-01-01T10:30:00.000');
     expect(utcIso8601String, '2020-01-01T15:30:00.000Z');
@@ -79,8 +79,8 @@ void main() {
     when(dateTime.timeZoneOffset).thenReturn(const Duration(minutes: -30));
 
     final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.iso8601UtcStirng;
-    final offsetIso8601String = dateTime.iso8601OffsetString;
+    final utcIso8601String = dateTime.toIso8601UtcString();
+    final offsetIso8601String = dateTime.toIso8601OffsetString();
 
     expect(defaultIsoString, '2020-01-01T10:30:00.000');
     expect(utcIso8601String, '2020-01-01T11:00:00.000Z');

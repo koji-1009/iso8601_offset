@@ -1,9 +1,9 @@
 extension DateTimeExt on DateTime {
-  String get iso8601UtcStirng {
+  String toIso8601UtcString() {
     return toUtc().toIso8601String();
   }
 
-  String get iso8601OffsetString {
+  String toIso8601OffsetString() {
     final base = toIso8601String();
 
     final offset = timeZoneOffset;
