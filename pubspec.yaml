@@ -1,6 +1,6 @@
 name: iso8601_offset
-description: A new Flutter package project.
-version: 0.0.1
+description: Provide a string containing offset information that is not processed by `DateTime.toIso8601String()`.
+version: 1.0.0
 homepage: https://github.com/koji-1009/iso8601_offset
 
 environment:
