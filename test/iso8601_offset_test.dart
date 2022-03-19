@@ -24,6 +24,7 @@ void main() {
     when(dateTime.toIso8601String()).thenReturn('2020-01-01T10:30:00.000');
     when(dateTime.toUtc()).thenReturn(DateTime.utc(2020, 1, 1, 1, 30, 0));
     when(dateTime.timeZoneOffset).thenReturn(const Duration(hours: 9));
+    when(dateTime.isUtc).thenReturn(false);
 
     final defaultIsoString = dateTime.toIso8601String();
     final utcIso8601String = dateTime.toIso8601UtcString();
@@ -45,6 +46,7 @@ void main() {
         minutes: 30,
       ),
     );
+    when(dateTime.isUtc).thenReturn(false);
 
     final defaultIsoString = dateTime.toIso8601String();
     final utcIso8601String = dateTime.toIso8601UtcString();
@@ -61,6 +63,7 @@ void main() {
     when(dateTime.toIso8601String()).thenReturn('2020-01-01T10:30:00.000');
     when(dateTime.toUtc()).thenReturn(DateTime.utc(2020, 1, 1, 15, 30, 0));
     when(dateTime.timeZoneOffset).thenReturn(const Duration(hours: -5));
+    when(dateTime.isUtc).thenReturn(false);
 
     final defaultIsoString = dateTime.toIso8601String();
     final utcIso8601String = dateTime.toIso8601UtcString();
@@ -77,6 +80,7 @@ void main() {
     when(dateTime.toIso8601String()).thenReturn('2020-01-01T10:30:00.000');
     when(dateTime.toUtc()).thenReturn(DateTime.utc(2020, 1, 1, 11, 0, 0));
     when(dateTime.timeZoneOffset).thenReturn(const Duration(minutes: -30));
+    when(dateTime.isUtc).thenReturn(false);
 
     final defaultIsoString = dateTime.toIso8601String();
     final utcIso8601String = dateTime.toIso8601UtcString();
