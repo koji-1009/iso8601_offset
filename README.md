@@ -1,3 +1,6 @@
+[![pub package](https://img.shields.io/pub/v/iso8601_offset.svg)](https://pub.dev/packages/iso8601_offset)
+[![analyze](https://github.com/koji-1009/iso8601_offset/actions/workflows/analyze.yml/badge.svg)](https://github.com/koji-1009/iso8601_offset/actions/workflows/analyze.yml)
+
 # iso8601_offset
 
 ## Features
