@@ -1,3 +1,8 @@
+## [1.2.0] - 2026.08.20
+
+* Require Dart 3.11 or later
+* Remove Flutter from dev dependencies and example
+
 ## [1.1.0] - 2022.03.20
 
 * Add JsonConverter

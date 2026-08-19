@@ -1,93 +1,113 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:iso8601_offset/iso8601_offset.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:test/test.dart';
 
-import 'iso8601_offset_test.mocks.dart';
+/// A [DateTime] whose time zone is fixed, so that the tests do not depend on
+/// the time zone of the machine running them.
+class _FixedOffsetDateTime implements DateTime {
+  const _FixedOffsetDateTime({
+    required String iso8601String,
+    required DateTime utc,
+    required this.timeZoneOffset,
+  }) : _iso8601String = iso8601String,
+       _utc = utc;
 
-@GenerateMocks([DateTime])
+  final String _iso8601String;
+  final DateTime _utc;
+
+  @override
+  final Duration timeZoneOffset;
+
+  @override
+  bool get isUtc => false;
+
+  @override
+  String toIso8601String() => _iso8601String;
+
+  @override
+  DateTime toUtc() => _utc;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
 void main() {
   test('UTC time', () {
     final dateTime = DateTime.utc(2020, 1, 1, 10, 30, 0);
-    final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.toIso8601UtcString();
-    final offsetIso8601String = dateTime.toIso8601OffsetString();
 
-    expect(defaultIsoString, '2020-01-01T10:30:00.000Z');
-    expect(utcIso8601String, '2020-01-01T10:30:00.000Z');
-    expect(offsetIso8601String, '2020-01-01T10:30:00.000Z');
+    expect(dateTime.toIso8601String(), '2020-01-01T10:30:00.000Z');
+    expect(dateTime.toIso8601UtcString(), '2020-01-01T10:30:00.000Z');
+    expect(dateTime.toIso8601OffsetString(), '2020-01-01T10:30:00.000Z');
+  });
+
+  test('+00:00', () {
+    final dateTime = _FixedOffsetDateTime(
+      iso8601String: '2020-01-01T10:30:00.000',
+      utc: DateTime.utc(2020, 1, 1, 10, 30, 0),
+      timeZoneOffset: Duration.zero,
+    );
+
+    expect(dateTime.toIso8601String(), '2020-01-01T10:30:00.000');
+    expect(dateTime.toIso8601UtcString(), '2020-01-01T10:30:00.000Z');
+    expect(dateTime.toIso8601OffsetString(), '2020-01-01T10:30:00.000+00:00');
   });
 
   test('+09:00', () {
-    final dateTime = MockDateTime();
+    final dateTime = _FixedOffsetDateTime(
+      iso8601String: '2020-01-01T10:30:00.000',
+      utc: DateTime.utc(2020, 1, 1, 1, 30, 0),
+      timeZoneOffset: const Duration(hours: 9),
+    );
 
-    when(dateTime.toIso8601String()).thenReturn('2020-01-01T10:30:00.000');
-    when(dateTime.toUtc()).thenReturn(DateTime.utc(2020, 1, 1, 1, 30, 0));
-    when(dateTime.timeZoneOffset).thenReturn(const Duration(hours: 9));
-    when(dateTime.isUtc).thenReturn(false);
-
-    final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.toIso8601UtcString();
-    final offsetIso8601String = dateTime.toIso8601OffsetString();
-
-    expect(defaultIsoString, '2020-01-01T10:30:00.000');
-    expect(utcIso8601String, '2020-01-01T01:30:00.000Z');
-    expect(offsetIso8601String, '2020-01-01T10:30:00.000+09:00');
+    expect(dateTime.toIso8601String(), '2020-01-01T10:30:00.000');
+    expect(dateTime.toIso8601UtcString(), '2020-01-01T01:30:00.000Z');
+    expect(dateTime.toIso8601OffsetString(), '2020-01-01T10:30:00.000+09:00');
   });
 
   test('+11:30', () {
-    final dateTime = MockDateTime();
-
-    when(dateTime.toIso8601String()).thenReturn('2020-01-01T10:30:00.000');
-    when(dateTime.toUtc()).thenReturn(DateTime.utc(2019, 12, 31, 22, 30, 0));
-    when(dateTime.timeZoneOffset).thenReturn(
-      const Duration(
-        hours: 11,
-        minutes: 30,
-      ),
+    final dateTime = _FixedOffsetDateTime(
+      iso8601String: '2020-01-01T10:30:00.000',
+      utc: DateTime.utc(2019, 12, 31, 23, 0, 0),
+      timeZoneOffset: const Duration(hours: 11, minutes: 30),
     );
-    when(dateTime.isUtc).thenReturn(false);
 
-    final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.toIso8601UtcString();
-    final offsetIso8601String = dateTime.toIso8601OffsetString();
-
-    expect(defaultIsoString, '2020-01-01T10:30:00.000');
-    expect(utcIso8601String, '2019-12-31T22:30:00.000Z');
-    expect(offsetIso8601String, '2020-01-01T10:30:00.000+11:30');
+    expect(dateTime.toIso8601String(), '2020-01-01T10:30:00.000');
+    expect(dateTime.toIso8601UtcString(), '2019-12-31T23:00:00.000Z');
+    expect(dateTime.toIso8601OffsetString(), '2020-01-01T10:30:00.000+11:30');
   });
 
   test('-05:00', () {
-    final dateTime = MockDateTime();
+    final dateTime = _FixedOffsetDateTime(
+      iso8601String: '2020-01-01T10:30:00.000',
+      utc: DateTime.utc(2020, 1, 1, 15, 30, 0),
+      timeZoneOffset: const Duration(hours: -5),
+    );
 
-    when(dateTime.toIso8601String()).thenReturn('2020-01-01T10:30:00.000');
-    when(dateTime.toUtc()).thenReturn(DateTime.utc(2020, 1, 1, 15, 30, 0));
-    when(dateTime.timeZoneOffset).thenReturn(const Duration(hours: -5));
-    when(dateTime.isUtc).thenReturn(false);
+    expect(dateTime.toIso8601String(), '2020-01-01T10:30:00.000');
+    expect(dateTime.toIso8601UtcString(), '2020-01-01T15:30:00.000Z');
+    expect(dateTime.toIso8601OffsetString(), '2020-01-01T10:30:00.000-05:00');
+  });
 
-    final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.toIso8601UtcString();
-    final offsetIso8601String = dateTime.toIso8601OffsetString();
+  test('-09:30', () {
+    final dateTime = _FixedOffsetDateTime(
+      iso8601String: '2020-01-01T10:30:00.000',
+      utc: DateTime.utc(2020, 1, 1, 20, 0, 0),
+      timeZoneOffset: const Duration(hours: -9, minutes: -30),
+    );
 
-    expect(defaultIsoString, '2020-01-01T10:30:00.000');
-    expect(utcIso8601String, '2020-01-01T15:30:00.000Z');
-    expect(offsetIso8601String, '2020-01-01T10:30:00.000-05:00');
+    expect(dateTime.toIso8601String(), '2020-01-01T10:30:00.000');
+    expect(dateTime.toIso8601UtcString(), '2020-01-01T20:00:00.000Z');
+    expect(dateTime.toIso8601OffsetString(), '2020-01-01T10:30:00.000-09:30');
   });
 
   test('-00:30', () {
-    final dateTime = MockDateTime();
+    final dateTime = _FixedOffsetDateTime(
+      iso8601String: '2020-01-01T10:30:00.000',
+      utc: DateTime.utc(2020, 1, 1, 11, 0, 0),
+      timeZoneOffset: const Duration(minutes: -30),
+    );
 
-    when(dateTime.toIso8601String()).thenReturn('2020-01-01T10:30:00.000');
-    when(dateTime.toUtc()).thenReturn(DateTime.utc(2020, 1, 1, 11, 0, 0));
-    when(dateTime.timeZoneOffset).thenReturn(const Duration(minutes: -30));
-    when(dateTime.isUtc).thenReturn(false);
-
-    final defaultIsoString = dateTime.toIso8601String();
-    final utcIso8601String = dateTime.toIso8601UtcString();
-    final offsetIso8601String = dateTime.toIso8601OffsetString();
-
-    expect(defaultIsoString, '2020-01-01T10:30:00.000');
-    expect(utcIso8601String, '2020-01-01T11:00:00.000Z');
-    expect(offsetIso8601String, '2020-01-01T10:30:00.000-00:30');
+    expect(dateTime.toIso8601String(), '2020-01-01T10:30:00.000');
+    expect(dateTime.toIso8601UtcString(), '2020-01-01T11:00:00.000Z');
+    expect(dateTime.toIso8601OffsetString(), '2020-01-01T10:30:00.000-00:30');
   });
 }

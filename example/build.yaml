@@ -8,12 +8,18 @@ targets:
           #
           # The default value for each is listed.
           any_map: false
-          checked: true
+          checked: true # false -> true
+          constructor: ""
           create_factory: true
+          create_field_map: false
+          create_json_keys: false
+          create_json_schema: false
+          create_per_field_to_json: false
           create_to_json: true
+          date_time_utc: false
           disallow_unrecognized_keys: false
           explicit_to_json: false
-          field_rename: snake
+          field_rename: snake # none -> snake
           generic_argument_factories: false
           ignore_unannotated: false
-          include_if_null: false
+          include_if_null: true
