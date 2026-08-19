@@ -1,6 +1,6 @@
 /// a extension of DateTime
 extension DateTimeExt on DateTime {
-  /// Converts to UCT `yyyy-MM-ddTHH:mm:ss.mmmuuZ` format and returns a string.
+  /// Converts to UTC `yyyy-MM-ddTHH:mm:ss.mmmuuZ` format and returns a string.
   String toIso8601UtcString() {
     return toUtc().toIso8601String();
   }
